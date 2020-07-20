@@ -1,64 +1,66 @@
-import React, {  useContext, useReducer ,createContext} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import Counter from "./Counter";
-import {
-  // HeroContext,
-  // HeroProvider,
-  initialState,
-} from "../../context/heroContext/heroContext";
+import { HeroContext } from "../../context/heroContext/heroContext";
 
-const data = {
-  str: 2,
-  int: 7,
-  agi: 9,
-  luk: 7,
-};
+const CountersWrapper = styled.div`
+  padding: 0 3rem;
+  border: 1px solid green;
+`;
+const SubmitWrapper = styled.div`
+  padding: 1rem 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border: 1px solid green;
+`;
 
+const SumbitButton = styled.div`
+  border: 1px solid black;
+  text-align: center;
+  padding: 0.5rem 4rem;
+  border-radius: 5px;
+  background-color: #79c9e8;
+  cursor: pointer;
+`;
 
-function reducer(state, action) {
-  switch (action.type) {
-    case "STR_INCREMENT":
-      return { ...state, ...{ str: state.str + 1 } };
-    case "STR_DECREMENT":
-      return { ...state, ...{ str: state.str - 1 } };
-    default:
-      throw new Error();
-  }
-}
-
-export const HeroContext = createContext(initialState);
-
+// function calcTotalPoints(heroProfile) {
+//   return Object.values(heroProfile).reduce((acc, cur) => {
+//     return acc + cur;
+//   });
+// }
 
 function Profile() {
-  // const [state, dispatch] = useReducer(reducer, initialState);
-  // console.log("state", state);
-  // const value = useContext(HeroContext);
-  // console.log("value", value);
-  // const heroPointState = {
-  //   str: state.str,
-  //   int: state.int,
-  //   agi: state.agi,
-  //   luk: state.luk,
-  // };
+  const { heroProfileState } = useContext(HeroContext);
+  // const [totalPoints, setTotalPoints] = useState(0);
+  const [availablePoints, setAvailablePoints] = useState(0);
+
+  const abilityCounters = Object.entries(heroProfileState).map(
+    ([attribute, point]) => {
+      return (
+        <Counter
+          key={`attribute-${attribute}`}
+          attribute={attribute}
+          point={point}
+          availablePoints={availablePoints}
+          setAvailablePoints={setAvailablePoints}
+        />
+      );
+    }
+  );
 
   
-  
-  const heroProfile = Object.entries(data).map(([attribute, point]) => {
-    return (
-      <Counter
-        key={`attribute-${attribute}`}
-        attribute={attribute}
-        point={point}
-        dispatch={dispatch}
-      />
-    );
-  });
-  console.log("heroProfile", heroProfile);
+
+  console.log("totalPoints", availablePoints);
 
   return (
-    <HeroContext.Provider value={heroPointState}>
-      <div>{heroProfile}</div>
-    </HeroContext.Provider>
+    <>
+      <CountersWrapper>{abilityCounters}</CountersWrapper>
+      <SubmitWrapper>
+        <p>剩餘點數： {availablePoints}</p>
+        <SumbitButton>儲存</SumbitButton>
+      </SubmitWrapper>
+    </>
   );
 }
 

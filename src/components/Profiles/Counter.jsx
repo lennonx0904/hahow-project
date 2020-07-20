@@ -1,22 +1,24 @@
-import React, { useState, useContext, useReducer, createContext } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
-import {
-  // HeroContext,
-  // HeroProvider,
-  initialState,
-} from "../../context/heroContext/heroContext";
-
-import { HeroContext } from "./Profile";
+import { HeroContext } from "../../context/heroContext/heroContext";
+import AddBoxIcon from "@material-ui/icons/AddBox";
+import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
 
 const CounterWrapper = styled.div`
   display: flex;
+  align-items: center;
 `;
 
-const Button = styled.div`
-  cursor: pointer;
-  border: 1px solid black;
+const Attribute = styled.div`
   padding: 1rem;
+  width: 80px;
 `;
+
+// const Button = styled.div`
+//   cursor: pointer;
+//   border: 1px solid black;
+//   padding: 1rem;
+// `;
 const Point = styled.div`
   padding: 0 1rem;
   color: blue;
@@ -24,52 +26,39 @@ const Point = styled.div`
   align-items: center;
 `;
 
-// function reducer(state, action) {
-//   switch (action.type) {
-//     case "STR_INCREMENT":
-//       return { ...state, ...{ str: state.str + 1 } };
-//     case "STR_DECREMENT":
-//       return { ...state, ...{ str: state.str - 1 } };
-//     default:
-//       throw new Error();
-//   }
-// }
-// const HeroContext = createContext(initialState);
-
-function Counter({ attribute, point, dispatch }) {
-  // const [state, dispatch] = useReducer(reducer, initialState);
-  // console.log("state", state);
-  // const value = useContext(HeroContext);
-  // console.log("value", value);
-  // const heroPointState = {
-  //   str: state.str,
-  //   int: state.int,
-  //   agi: state.agi,
-  //   luk: state.luk,
-  // };
+function Counter({ attribute, point, availablePoints, setAvailablePoints }) {
+  const { dispatch } = useContext(HeroContext);
 
   return (
-    // <HeroContext>
-      <CounterWrapper>
-        {attribute}
-        <Button
-          onClick={() => {
-            dispatch({ type: `${attribute.toUpperCase()}_INCREMENT` });
-          }}
-        >
-          +
-        </Button>
-        <Point>{point}</Point>
-        <Button
-          onClick={() => {
-            // if (point === 0) return;
-            dispatch({ type: `${attribute.toUpperCase()}_DECREMENT` });
-          }}
-        >
-          -
-        </Button>
-      </CounterWrapper>
-    // </HeroContext>
+    <CounterWrapper>
+      <Attribute>{attribute.toUpperCase()}</Attribute>
+      <AddBoxIcon
+        color={availablePoints === 0 ? "disabled" : "action"}
+        fontSize="large"
+        onClick={() => {
+          if (availablePoints === 0) return;
+          dispatch({
+            type: "UPDATE_HERO_PROFILE",
+            payload: { [attribute]: point + 1 },
+          });
+          setAvailablePoints(availablePoints - 1);
+        }}
+      />
+
+      <Point>{point}</Point>
+      <IndeterminateCheckBoxIcon
+        color={point === 0 ? "disabled" : "action"}
+        fontSize="large"
+        onClick={() => {
+          if (point === 0) return;
+          dispatch({
+            type: "UPDATE_HERO_PROFILE",
+            payload: { [attribute]: point - 1 },
+          });
+          setAvailablePoints(availablePoints + 1);
+        }}
+      />
+    </CounterWrapper>
   );
 }
 

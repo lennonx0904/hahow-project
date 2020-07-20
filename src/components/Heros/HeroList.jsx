@@ -1,46 +1,55 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Hero from "./Hero";
 import styled from "styled-components";
 
-const data = [
-  {
-    id: "1",
-    name: "Daredevil",
-    image:
-      "http://i.annihil.us/u/prod/marvel/i/mg/6/90/537ba6d49472b/standard_xlarge.jpg",
-  },
-  {
-    id: "2",
-    name: "Thor",
-    image:
-      "http://x.annihil.us/u/prod/marvel/i/mg/5/a0/537bc7036ab02/standard_xlarge.jpg",
-  },
-  {
-    id: "3",
-    name: "Iron Man",
-    image:
-      "http://i.annihil.us/u/prod/marvel/i/mg/6/a0/55b6a25e654e6/standard_xlarge.jpg",
-  },
-  {
-    id: "4",
-    name: "Hulk",
-    image:
-      "http://i.annihil.us/u/prod/marvel/i/mg/5/a0/538615ca33ab0/standard_xlarge.jpg",
-  },
-];
+import ProfileContainer from "../Profiles/ProfileContainer";
+import { fetchHeroList } from "../../api";
+import { useParams } from "react-router-dom";
+const Container = styled.div`
+  padding: 2rem;
+`;
 
-const Wrapper = styled.div`
+const HeroListWrapper = styled.div`
   display: flex;
   justify-content: space-around;
+  padding: 3rem;
 `;
 
 function HeroList() {
-  const heroes = data.map((hero, idx) => {
+  const [heroList, setHeroList] = useState([]);
+  let { heroId } = useParams();
+
+  useEffect(() => {
+    fetchHeroList().then((data) => {
+      setHeroList(data);
+    });
+  }, []);
+
+  /**
+   * @param id each hero's own id
+   * @param heroId the selected hero's id
+   */
+
+  const heroes = heroList.map((hero) => {
     const { id, name, image } = hero;
-    return <Hero key={`hero-${id}`} id={id} name={name} image={image} />;
+    return (
+      <Hero
+        key={`hero-${id}`}
+        id={id}
+        name={name}
+        image={image}
+        heroId={heroId}
+      />
+    );
   });
 
-  return <Wrapper>{heroes}</Wrapper>;
+  return (
+    <Container>
+      {console.log("RENDER~~")}
+      <HeroListWrapper>{heroes}</HeroListWrapper>
+      {heroId && <ProfileContainer heroId={heroId} />}
+    </Container>
+  );
 }
 
 export default HeroList;
