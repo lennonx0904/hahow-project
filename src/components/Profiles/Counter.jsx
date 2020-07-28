@@ -21,23 +21,23 @@ const Attribute = styled.div`
 // `;
 const Point = styled.div`
   padding: 0 1rem;
-  color: blue;
-  display: flex;
-  align-items: center;
+  width: 4rem;
+  text-align: center;
 `;
 
 function Counter({ attribute, point, availablePoints, setAvailablePoints }) {
-  const { dispatch } = useContext(HeroContext);
+  const { heroProfileDispatch } = useContext(HeroContext);
 
   return (
     <CounterWrapper>
       <Attribute>{attribute.toUpperCase()}</Attribute>
+
       <AddBoxIcon
         color={availablePoints === 0 ? "disabled" : "action"}
         fontSize="large"
         onClick={() => {
           if (availablePoints === 0) return;
-          dispatch({
+          heroProfileDispatch({
             type: "UPDATE_HERO_PROFILE",
             payload: { [attribute]: point + 1 },
           });
@@ -51,7 +51,7 @@ function Counter({ attribute, point, availablePoints, setAvailablePoints }) {
         fontSize="large"
         onClick={() => {
           if (point === 0) return;
-          dispatch({
+          heroProfileDispatch({
             type: "UPDATE_HERO_PROFILE",
             payload: { [attribute]: point - 1 },
           });

@@ -1,11 +1,15 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useReducer } from "react";
 import styled from "styled-components";
 import Counter from "./Counter";
-import { HeroContext } from "../../context/heroContext/heroContext";
+import { HeroContext } from "context/heroContext/heroContext";
+import { GlobalContext } from "context/globalContext/globalContext";
+import { patchHeroProfile } from "../../api";
+import { useParams } from "react-router-dom";
+import useCustomSnackbar from "components/common/snackbar";
 
 const CountersWrapper = styled.div`
-  padding: 0 3rem;
   border: 1px solid green;
+  flex-grow: 1;
 `;
 const SubmitWrapper = styled.div`
   padding: 1rem 3rem;
@@ -15,25 +19,32 @@ const SubmitWrapper = styled.div`
   border: 1px solid green;
 `;
 
+const AvailablePoints = styled.div`
+  font-size: 1.24rem;
+  font-weight: 700;
+  padding-bottom: 1rem;
+`;
+
 const SumbitButton = styled.div`
   border: 1px solid black;
   text-align: center;
-  padding: 0.5rem 4rem;
+  padding: 0.75rem 4rem;
   border-radius: 5px;
-  background-color: #79c9e8;
+  background-color: #79bbea;
   cursor: pointer;
 `;
 
-// function calcTotalPoints(heroProfile) {
-//   return Object.values(heroProfile).reduce((acc, cur) => {
-//     return acc + cur;
-//   });
-// }
-
 function Profile() {
   const { heroProfileState } = useContext(HeroContext);
-  // const [totalPoints, setTotalPoints] = useState(0);
+  let { heroId } = useParams();
+  const { globalState, globalDispatch } = useContext(GlobalContext);
+  console.log("globalState", globalState);
   const [availablePoints, setAvailablePoints] = useState(0);
+
+  const {
+    enqueueSuccessSnackbar,
+    enqueueWarningSnackbar,
+  } = useCustomSnackbar();
 
   const abilityCounters = Object.entries(heroProfileState).map(
     ([attribute, point]) => {
@@ -49,16 +60,34 @@ function Profile() {
     }
   );
 
-  
+  async function handleSubmit(heroId, profile) {
+    const res = await patchHeroProfile(heroId, profile);
 
-  console.log("totalPoints", availablePoints);
+    console.log("i喔喔喔喔喔", res);
+
+    if (res === "OK") {
+      globalDispatch({
+        type: "SUBMIT_SUCCESS",
+        payload: { succes: "SUBMIT_SUCCESS" },
+      });
+      enqueueSuccessSnackbar("儲存成功");
+      return;
+    }
+    enqueueWarningSnackbar("儲存失敗");
+  }
 
   return (
     <>
       <CountersWrapper>{abilityCounters}</CountersWrapper>
       <SubmitWrapper>
-        <p>剩餘點數： {availablePoints}</p>
-        <SumbitButton>儲存</SumbitButton>
+        <AvailablePoints>剩餘點數： {availablePoints}</AvailablePoints>
+        <SumbitButton
+          onClick={() => {
+            handleSubmit(heroId, heroProfileState);
+          }}
+        >
+          儲存
+        </SumbitButton>
       </SubmitWrapper>
     </>
   );

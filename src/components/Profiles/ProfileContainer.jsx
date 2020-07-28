@@ -14,16 +14,16 @@ const Wrapper = styled.div`
 `;
 
 function ProfileContainer({ heroId }) {
-  const [heroProfileState, dispatch] = useReducer(HeroReducer, {});
-  console.log("profile", heroProfileState);
+  const [heroProfileState, heroProfileDispatch] = useReducer(HeroReducer, {});
+  
   useEffect(() => {
     fetchHeroProfile(heroId).then((data) => {
-      dispatch({ type: "UPDATE_HERO_PROFILE", payload: data });
+      heroProfileDispatch({ type: "UPDATE_HERO_PROFILE", payload: data });
     });
   }, [heroId]);
 
   return (
-    <HeroContext.Provider value={{ heroProfileState, dispatch }}>
+    <HeroContext.Provider value={{ heroProfileState, heroProfileDispatch }}>
       <Wrapper>
         <Profile />
       </Wrapper>

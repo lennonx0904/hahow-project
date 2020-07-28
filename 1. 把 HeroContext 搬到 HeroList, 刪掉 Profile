@@ -1,0 +1,7 @@
+1. 把 HeroContext 搬到 HeroList, 刪掉 ProfileContainer
+3. HeroList 不能重新 render
+4. RWD
+5. handle error
+
+
+6. 還需要 globalContext ㄇ？

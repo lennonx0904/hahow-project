@@ -7,7 +7,6 @@ const HeroCard = styled.div`
   display: flex;
   flex-direction: column;
   border: 1px solid #c6c7c8;
-
   border-radius: 5px;
   padding: 1rem;
   cursor: pointer;
@@ -26,6 +25,10 @@ const Name = styled.div`
   text-decoration: none;
 `;
 
+/**
+ * @param id each hero's own id
+ * @param heroId the selected hero's id
+ */
 function Hero({ id, name, image, heroId }) {
   const isCurrentHero = heroId === id;
   return (

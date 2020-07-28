@@ -11,7 +11,7 @@ const Container = styled.div`
 
 const HeroListWrapper = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   padding: 3rem;
 `;
 
@@ -29,7 +29,6 @@ function HeroList() {
    * @param id each hero's own id
    * @param heroId the selected hero's id
    */
-
   const heroes = heroList.map((hero) => {
     const { id, name, image } = hero;
     return (
@@ -45,7 +44,6 @@ function HeroList() {
 
   return (
     <Container>
-      {console.log("RENDER~~")}
       <HeroListWrapper>{heroes}</HeroListWrapper>
       {heroId && <ProfileContainer heroId={heroId} />}
     </Container>

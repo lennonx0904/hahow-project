@@ -18,11 +18,19 @@ export async function fetchHeroList() {
   }
 }
 
-export async function fetchHeroProfile(id) {
+export async function fetchHeroProfile(heroId) {
   try {
-    const res = await axios.get(`${HERO_PROFILE_URL}/${id}/profile`);
-    console.log("~~~", res);
+    const res = await axios.get(`${HERO_PROFILE_URL}/${heroId}/profile`);
+    return res.data;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
 
+export async function patchHeroProfile(heroId, profile) {
+  try {
+    const res = await axios.patch(`${HERO_PROFILE_URL}/${heroId}/profile`, profile);
+    console.log('patchHeroProfile res',res); 
     return res.data;
   } catch (error) {
     console.error("Error:", error);
