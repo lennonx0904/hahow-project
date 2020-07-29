@@ -1,14 +1,32 @@
-import React, { useState, useEffect, useContext, useReducer } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import Counter from "./Counter";
 import { HeroContext } from "context/heroContext/heroContext";
-import { GlobalContext } from "context/globalContext/globalContext";
+// import { GlobalContext } from "context/globalContext/globalContext";
 import { patchHeroProfile } from "../../api";
 import { useParams } from "react-router-dom";
 import useCustomSnackbar from "components/common/snackbar";
 
+const Wrapper = styled.div`
+  display: flex;
+  // padding: 0 3rem;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1280px;
+
+  @media (max-width: 992px) {
+    width: 70%;
+  }
+  @media (max-width: 768px) {
+    width: 88%;
+  }
+  @media (max-width: 576px) {
+    width: 70%;
+    flex-direction: column;
+  }
+`;
+
 const CountersWrapper = styled.div`
-  border: 1px solid green;
   flex-grow: 1;
 `;
 const SubmitWrapper = styled.div`
@@ -16,35 +34,42 @@ const SubmitWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  border: 1px solid green;
+  @media (max-width: 992px) {
+    padding: 1rem 1.75rem;
+  }
 `;
 
 const AvailablePoints = styled.div`
-  font-size: 1.24rem;
+  font-size: 1.25rem;
   font-weight: 700;
   padding-bottom: 1rem;
 `;
 
 const SumbitButton = styled.div`
-  border: 1px solid black;
   text-align: center;
   padding: 0.75rem 4rem;
   border-radius: 5px;
-  background-color: #79bbea;
   cursor: pointer;
+  color: #ffffff;
+  background-color: ${(props) =>
+    props.shouldDisableSubmit ? "#c6c7c8" : "#266794"};
+  cursor: ${(props) => (props.shouldDisableSubmit ? "not-allowed" : "pointer")};
 `;
 
 function Profile() {
   const { heroProfileState } = useContext(HeroContext);
   let { heroId } = useParams();
-  const { globalState, globalDispatch } = useContext(GlobalContext);
-  console.log("globalState", globalState);
+  // const { globalState, globalDispatch } = useContext(GlobalContext);
+
   const [availablePoints, setAvailablePoints] = useState(0);
+  const shouldDisableSubmit = availablePoints !== 0;
 
   const {
     enqueueSuccessSnackbar,
     enqueueWarningSnackbar,
   } = useCustomSnackbar();
+
+  useEffect(() => {});
 
   const abilityCounters = Object.entries(heroProfileState).map(
     ([attribute, point]) => {
@@ -61,15 +86,13 @@ function Profile() {
   );
 
   async function handleSubmit(heroId, profile) {
+    if (shouldDisableSubmit) return;
     const res = await patchHeroProfile(heroId, profile);
-
-    console.log("i喔喔喔喔喔", res);
-
     if (res === "OK") {
-      globalDispatch({
-        type: "SUBMIT_SUCCESS",
-        payload: { succes: "SUBMIT_SUCCESS" },
-      });
+      // globalDispatch({
+      //   type: "SUBMIT_SUCCESS",
+      //   payload: { succes: "SUBMIT_SUCCESS" },
+      // });
       enqueueSuccessSnackbar("儲存成功");
       return;
     }
@@ -77,11 +100,12 @@ function Profile() {
   }
 
   return (
-    <>
+    <Wrapper>
       <CountersWrapper>{abilityCounters}</CountersWrapper>
       <SubmitWrapper>
         <AvailablePoints>剩餘點數： {availablePoints}</AvailablePoints>
         <SumbitButton
+          shouldDisableSubmit={shouldDisableSubmit}
           onClick={() => {
             handleSubmit(heroId, heroProfileState);
           }}
@@ -89,7 +113,7 @@ function Profile() {
           儲存
         </SumbitButton>
       </SubmitWrapper>
-    </>
+    </Wrapper>
   );
 }
 

@@ -8,11 +8,25 @@ const HeroCard = styled.div`
   flex-direction: column;
   border: 1px solid #c6c7c8;
   border-radius: 5px;
-  padding: 1rem;
+  padding: 0.5rem;
   cursor: pointer;
+  margin-bottom: 1.5rem;
   transition: transform 300ms ease-in-out;
+  transform: ${(props) =>
+    props.isCurrentHero ? "translate(0, -20px)" : "none"};
+  box-shadow: ${(props) =>
+    props.isCurrentHero ? "4px 4px 4px 0 rgba(0, 0, 0, 0.5)" : "none"};
   &:hover {
-    box-shadow: 4px 4px 4px 0 rgba(0, 0, 0, 0.16);
+    box-shadow: ${(props) =>
+      props.isCurrentHero
+        ? "4px 4px 4px 0 rgba(0, 0, 0, 0.5)"
+        : "4px 4px 4px 0 rgba(0, 0, 0, 0.16)"};
+  }
+
+  @media (max-width: 992px) {
+    transform: none;
+    box-shadow: ${(props) =>
+      props.isCurrentHero ? "4px 4px 4px 0 rgba(0, 0, 0, 0.5)" : "none"};
   }
 `;
 
@@ -33,10 +47,8 @@ function Hero({ id, name, image, heroId }) {
   const isCurrentHero = heroId === id;
   return (
     <Link to={`${ROUTES.HOEM_PAGE}/${id}`}>
-      <HeroCard
-        style={{ transform: isCurrentHero ? "translate(0, -20px)" : "none" }}
-      >
-        <Image src={`${image}`} />
+      <HeroCard isCurrentHero={isCurrentHero}>
+        <Image src={`${image}`} alt={`${name}`} />
         <Name>{name}</Name>
       </HeroCard>
     </Link>

@@ -1,35 +1,67 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer, memo } from "react";
 import Hero from "./Hero";
 import styled from "styled-components";
 
-import ProfileContainer from "../Profiles/ProfileContainer";
+import Profile from "../Profiles/Profile";
 import { fetchHeroList } from "../../api";
 import { useParams } from "react-router-dom";
+import { HeroContext } from "context/heroContext/heroContext";
+import { HeroReducer } from "context/heroContext/heroReducer";
+import { fetchHeroProfile } from "api";
 const Container = styled.div`
   padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  @media (max-width: 768px) {
+    padding: 0.75rem;
+  }
 `;
 
 const HeroListWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   justify-content: space-between;
-  padding: 3rem;
+  padding: 3rem 0;
+  width: 100%;
+  max-width: 1280px;
+  @media (max-width: 992px) {
+    width: 70%;
+  }
+  @media (max-width: 768px) {
+    width: 88%;
+  }
+  @media (max-width: 576px) {
+    width: 70%;
+    flex-direction: column;
+  }
 `;
 
 function HeroList() {
-  const [heroList, setHeroList] = useState([]);
+  const [heroProfileState, heroProfileDispatch] = useReducer(HeroReducer, {});
+  const [heroes, setHeroes] = useState([]);
   let { heroId } = useParams();
 
   useEffect(() => {
     fetchHeroList().then((data) => {
-      setHeroList(data);
+      setHeroes(data);
     });
   }, []);
+
+  useEffect(() => {
+    if (heroId) {
+      fetchHeroProfile(heroId).then((data) => {
+        heroProfileDispatch({ type: "UPDATE_HERO_PROFILE", payload: data });
+      });
+    }
+  }, [heroId]);
 
   /**
    * @param id each hero's own id
    * @param heroId the selected hero's id
    */
-  const heroes = heroList.map((hero) => {
+  const heroList = heroes.map((hero) => {
     const { id, name, image } = hero;
     return (
       <Hero
@@ -43,11 +75,13 @@ function HeroList() {
   });
 
   return (
-    <Container>
-      <HeroListWrapper>{heroes}</HeroListWrapper>
-      {heroId && <ProfileContainer heroId={heroId} />}
-    </Container>
+    <HeroContext.Provider value={{ heroProfileState, heroProfileDispatch }}>
+      <Container>
+        <HeroListWrapper>{heroList}</HeroListWrapper>
+        {heroId && <Profile heroId={heroId} />}
+      </Container>
+    </HeroContext.Provider>
   );
 }
 
-export default HeroList;
+export default memo(HeroList);

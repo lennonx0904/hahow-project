@@ -7,6 +7,15 @@ import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox"
 const CounterWrapper = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  width: 30%;
+  @media (max-width: 992px) {
+    width: 70%;
+  }
+  @media (max-width: 576px) {
+    width: 100%;
+    margin-bottom: 2rem;
+  }
 `;
 
 const Attribute = styled.div`
@@ -14,11 +23,6 @@ const Attribute = styled.div`
   width: 80px;
 `;
 
-// const Button = styled.div`
-//   cursor: pointer;
-//   border: 1px solid black;
-//   padding: 1rem;
-// `;
 const Point = styled.div`
   padding: 0 1rem;
   width: 4rem;
@@ -31,7 +35,6 @@ function Counter({ attribute, point, availablePoints, setAvailablePoints }) {
   return (
     <CounterWrapper>
       <Attribute>{attribute.toUpperCase()}</Attribute>
-
       <AddBoxIcon
         color={availablePoints === 0 ? "disabled" : "action"}
         fontSize="large"
@@ -44,7 +47,6 @@ function Counter({ attribute, point, availablePoints, setAvailablePoints }) {
           setAvailablePoints(availablePoints - 1);
         }}
       />
-
       <Point>{point}</Point>
       <IndeterminateCheckBoxIcon
         color={point === 0 ? "disabled" : "action"}

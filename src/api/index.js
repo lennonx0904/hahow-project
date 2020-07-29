@@ -30,7 +30,7 @@ export async function fetchHeroProfile(heroId) {
 export async function patchHeroProfile(heroId, profile) {
   try {
     const res = await axios.patch(`${HERO_PROFILE_URL}/${heroId}/profile`, profile);
-    console.log('patchHeroProfile res',res); 
+    
     return res.data;
   } catch (error) {
     console.error("Error:", error);
