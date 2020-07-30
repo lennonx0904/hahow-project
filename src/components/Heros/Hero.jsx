@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import ROUTES from "../../constant/routes";
-
+import { HeroContext } from "context/heroContext/heroContext";
+// import { Link } from "react-router-dom";
+// import ROUTES from "../../constant/routes";
+// import { useHistory } from "react-router-dom";
 const HeroCard = styled.div`
   display: flex;
   flex-direction: column;
@@ -33,6 +34,7 @@ const HeroCard = styled.div`
 const Image = styled.img`
   cursor: pointer;
 `;
+
 const Name = styled.div`
   padding: 1rem 0;
   text-align: center;
@@ -43,15 +45,22 @@ const Name = styled.div`
  * @param id each hero's own id
  * @param heroId the selected hero's id
  */
-function Hero({ id, name, image, heroId }) {
-  const isCurrentHero = heroId === id;
+function Hero({ id, name, image }) {
+  // const history = useHistory();
+  // const isCurrentHero = heroId === id;
+  const { heroDispatch } = useContext(HeroContext);
   return (
-    <Link to={`${ROUTES.HOEM_PAGE}/${id}`}>
-      <HeroCard isCurrentHero={isCurrentHero}>
-        <Image src={`${image}`} alt={`${name}`} />
-        <Name>{name}</Name>
-      </HeroCard>
-    </Link>
+    // <Link to={`${ROUTES.HEROES_PAGE}/${id}`}>
+    <HeroCard
+      // isCurrentHero={isCurrentHero}
+      onClick={() => {
+        heroDispatch({ type: "UPDATE_CURRENT_HERO_ID", payload: id });
+      }}
+    >
+      <Image src={`${image}`} alt={`${name}`} />
+      <Name>{name}</Name>
+    </HeroCard>
+    // </Link>
   );
 }
 

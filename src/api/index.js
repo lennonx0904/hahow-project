@@ -21,6 +21,7 @@ export async function fetchHeroList() {
 export async function fetchHeroProfile(heroId) {
   try {
     const res = await axios.get(`${HERO_PROFILE_URL}/${heroId}/profile`);
+
     return res.data;
   } catch (error) {
     console.error("Error:", error);

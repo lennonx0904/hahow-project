@@ -4,10 +4,10 @@ import styled from "styled-components";
 
 import Profile from "../Profiles/Profile";
 import { fetchHeroList } from "../../api";
-import { useParams } from "react-router-dom";
+// import { useParams } from "react-router-dom";
 import { HeroContext } from "context/heroContext/heroContext";
-import { HeroReducer } from "context/heroContext/heroReducer";
-import { fetchHeroProfile } from "api";
+import { HeroReducer, initialHeroState } from "context/heroContext/heroReducer";
+// import { fetchHeroProfile } from "api";
 const Container = styled.div`
   padding: 2rem;
   display: flex;
@@ -39,9 +39,10 @@ const HeroListWrapper = styled.div`
 `;
 
 function HeroList() {
-  const [heroProfileState, heroProfileDispatch] = useReducer(HeroReducer, {});
+  const [heroState, heroDispatch] = useReducer(HeroReducer, initialHeroState);
   const [heroes, setHeroes] = useState([]);
-  let { heroId } = useParams();
+  // let { heroId } = useParams();
+  // console.log('heroId',heroId);
 
   useEffect(() => {
     fetchHeroList().then((data) => {
@@ -49,14 +50,7 @@ function HeroList() {
     });
   }, []);
 
-  useEffect(() => {
-    if (heroId) {
-      fetchHeroProfile(heroId).then((data) => {
-        heroProfileDispatch({ type: "UPDATE_HERO_PROFILE", payload: data });
-      });
-    }
-  }, [heroId]);
-
+  
   /**
    * @param id each hero's own id
    * @param heroId the selected hero's id
@@ -69,16 +63,16 @@ function HeroList() {
         id={id}
         name={name}
         image={image}
-        heroId={heroId}
+        // heroId={heroId}
       />
     );
   });
-
+  console.log("rerender!!!");
   return (
-    <HeroContext.Provider value={{ heroProfileState, heroProfileDispatch }}>
+    <HeroContext.Provider value={{ heroState, heroDispatch }}>
       <Container>
         <HeroListWrapper>{heroList}</HeroListWrapper>
-        {heroId && <Profile heroId={heroId} />}
+        <Profile />
       </Container>
     </HeroContext.Provider>
   );
