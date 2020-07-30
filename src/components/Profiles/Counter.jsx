@@ -4,6 +4,8 @@ import { HeroContext } from "../../context/heroContext/heroContext";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
 
+import { useDispatch, useSelector } from "react-redux";
+import { updateHeroProfile } from "actions";
 const CounterWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -30,8 +32,8 @@ const Point = styled.div`
 `;
 
 function Counter({ attribute, point, availablePoints, setAvailablePoints }) {
-  const { heroProfileDispatch } = useContext(HeroContext);
-
+  // const { heroProfileDispatch } = useContext(HeroContext);
+  const heroDispatch = useDispatch();
   return (
     <CounterWrapper>
       <Attribute>{attribute.toUpperCase()}</Attribute>
@@ -40,10 +42,11 @@ function Counter({ attribute, point, availablePoints, setAvailablePoints }) {
         fontSize="large"
         onClick={() => {
           if (availablePoints === 0) return;
-          heroProfileDispatch({
-            type: "UPDATE_HERO_PROFILE",
-            payload: { [attribute]: point + 1 },
-          });
+          heroDispatch(updateHeroProfile(attribute, point + 1));
+          // heroProfileDispatch({
+          //   type: "UPDATE_HERO_PROFILE",
+          //   payload: { [attribute]: point + 1 },
+          // });
           setAvailablePoints(availablePoints - 1);
         }}
       />
@@ -53,10 +56,11 @@ function Counter({ attribute, point, availablePoints, setAvailablePoints }) {
         fontSize="large"
         onClick={() => {
           if (point === 0) return;
-          heroProfileDispatch({
-            type: "UPDATE_HERO_PROFILE",
-            payload: { [attribute]: point - 1 },
-          });
+          heroDispatch(updateHeroProfile([attribute], point - 1));
+          // heroProfileDispatch({
+          //   type: "UPDATE_HERO_PROFILE",
+          //   payload: { [attribute]: point - 1 },
+          // });
           setAvailablePoints(availablePoints + 1);
         }}
       />

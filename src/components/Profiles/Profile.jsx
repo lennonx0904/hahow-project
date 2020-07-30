@@ -2,11 +2,14 @@ import React, { useState, useEffect, useContext } from "react";
 import styled from "styled-components";
 import Counter from "./Counter";
 import { HeroContext } from "context/heroContext/heroContext";
-import { patchHeroProfile } from "../../api";
+// import { patchHeroProfile } from "../../api";
 // import { useParams } from "react-router-dom";
 import useCustomSnackbar from "components/common/snackbar";
 import { useHistory } from "react-router-dom";
-import { fetchHeroProfile } from "api";
+// import { fetchHeroProfile } from "api";
+import { fetchHeroProfile, patchHeroProfile } from "actions";
+// import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const ProfileWrapper = styled.div`
   display: flex;
@@ -58,26 +61,28 @@ const SumbitButton = styled.div`
 `;
 
 function Profile() {
-  const { heroState, heroDispatch } = useContext(HeroContext);
-  const { profile, currentHeroId } = heroState;
+  // const { heroState, heroDispatch } = useContext(HeroContext);
+  // const { profile, currentHeroId } = heroState;
   const [availablePoints, setAvailablePoints] = useState(0);
   const shouldDisableSubmit = availablePoints !== 0;
   const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar();
 
   const history = useHistory();
 
+  const profile = useSelector((state) => state.hero.profile);
+  const currentHeroId = useSelector((state) => state.hero.currentHeroId);
+
+  const dispatch = useDispatch();
+
   useEffect(() => {
+    setAvailablePoints(0);
     if (currentHeroId !== 0) {
       history.push(`/heroes/${currentHeroId}`);
-      fetchHeroProfile(currentHeroId).then((data) => {
-        heroDispatch({ type: "UPDATE_HERO_PROFILE", payload: data });
-      });
-    }
-
-    if (currentHeroId === 0) {
+      dispatch(fetchHeroProfile(currentHeroId));
+    } else {
       history.push(`/heroes`);
     }
-  }, [currentHeroId, heroDispatch, history]);
+  }, [currentHeroId, dispatch, history]);
 
   const abilityCounters = Object.entries(profile).map(([attribute, point]) => {
     return (
@@ -107,9 +112,10 @@ function Profile() {
       <SubmitWrapper>
         <AvailablePoints>剩餘點數： {availablePoints}</AvailablePoints>
         <SumbitButton
+          disable={shouldDisableSubmit}
           shouldDisableSubmit={shouldDisableSubmit}
           onClick={() => {
-            handleSubmit(currentHeroId, heroState);
+            handleSubmit(currentHeroId, profile);
           }}
         >
           儲存

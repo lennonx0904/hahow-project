@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
 import { HeroContext } from "context/heroContext/heroContext";
-// import { Link } from "react-router-dom";
-// import ROUTES from "../../constant/routes";
-// import { useHistory } from "react-router-dom";
+
+import { useDispatch, useSelector } from "react-redux";
+import { updateCurrentHeroId } from "actions";
+
 const HeroCard = styled.div`
   display: flex;
   flex-direction: column;
@@ -47,20 +48,20 @@ const Name = styled.div`
  */
 function Hero({ id, name, image }) {
   // const history = useHistory();
-  // const isCurrentHero = heroId === id;
-  const { heroDispatch } = useContext(HeroContext);
+
+  const currentHeroId = useSelector((state) => state.hero.currentHeroId);
+  const dispatch = useDispatch();
+  const isCurrentHero = id === currentHeroId;
   return (
-    // <Link to={`${ROUTES.HEROES_PAGE}/${id}`}>
     <HeroCard
-      // isCurrentHero={isCurrentHero}
+      isCurrentHero={isCurrentHero}
       onClick={() => {
-        heroDispatch({ type: "UPDATE_CURRENT_HERO_ID", payload: id });
+        dispatch(updateCurrentHeroId(id));
       }}
     >
       <Image src={`${image}`} alt={`${name}`} />
       <Name>{name}</Name>
     </HeroCard>
-    // </Link>
   );
 }
 

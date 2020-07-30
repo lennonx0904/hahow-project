@@ -4,19 +4,15 @@ import { HashRouter, Switch, Route } from "react-router-dom";
 import HeroList from "./components/Heros/HeroList";
 import ROUTES from "./constant/routes";
 import { SnackbarProvider } from "notistack";
-// import ProfileWrapper from "components/Profiles/ProfileWrapper";
+import Profile from "components/Profiles/Profile";
 
 function App() {
-  
   return (
     <SnackbarProvider max={1}>
       <HashRouter>
-        <Switch>
-          <Route exact path={ROUTES.HOEM_PAGE} component={HeroList} />
-          <Route exact path={ROUTES.HEROES_PAGE} component={HeroList} />
-          <Route exact path={ROUTES.SINGLE_HERO_PAGE} component={HeroList} />
-        </Switch>
-        {/* <ProfileWrapper /> */}
+        <Route exact path={ROUTES.HOEM_PAGE} component={HeroList} />
+        <Route path={ROUTES.HEROES_PAGE} component={HeroList} />
+        <Profile />
       </HashRouter>
     </SnackbarProvider>
   );
