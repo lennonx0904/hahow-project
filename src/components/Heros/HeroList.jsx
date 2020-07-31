@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchHeroList } from "actions";
 
 const Container = styled.div`
-  padding: 2rem;
+  padding: 1rem 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;

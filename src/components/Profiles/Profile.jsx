@@ -8,12 +8,23 @@ import { useHistory } from "react-router-dom";
 import { fetchHeroProfile, patchHeroProfile } from "actions";
 import ROUTES from "constant/routes";
 
+const Container = styled.div`
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    padding: 0.75rem;
+  }
+`;
 
 const ProfileWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
   max-width: 1280px;
+  padding: 0 2rem;
   position: relative;
 
   @media (max-width: 992px) {
@@ -21,6 +32,7 @@ const ProfileWrapper = styled.div`
   }
   @media (max-width: 768px) {
     width: 88%;
+    padding: 0 0.75rem;
   }
   @media (max-width: 576px) {
     width: 70%;
@@ -30,6 +42,10 @@ const ProfileWrapper = styled.div`
 
 const CountersWrapper = styled.div`
   flex-grow: 1;
+  @media (max-width: 576px) {
+    width: 80%;
+    margin: auto;
+  }
 `;
 
 const SubmitWrapper = styled.div`
@@ -38,7 +54,11 @@ const SubmitWrapper = styled.div`
   flex-direction: column;
   justify-content: flex-end;
   @media (max-width: 992px) {
-    padding: 1rem 1.75rem;
+    padding: 0.75rem 0;
+  }
+  @media (max-width: 576px) {
+    width: 70%;
+    margin: auto;
   }
 `;
 
@@ -46,6 +66,7 @@ const AvailablePoints = styled.div`
   font-size: 1.25rem;
   font-weight: 700;
   padding-bottom: 1rem;
+  text-align: center;
 `;
 
 const SumbitButton = styled.div`
@@ -116,22 +137,24 @@ function Profile() {
   return (
     <>
       {shouldRenderProfile ? (
-        <ProfileWrapper>
-          <CountersWrapper>
-            {isLoading ? <Loader /> : pointCounters}
-          </CountersWrapper>
-          <SubmitWrapper>
-            <AvailablePoints>剩餘點數： {availablePoints}</AvailablePoints>
-            <SumbitButton
-              shouldDisableSubmit={shouldDisableSubmit}
-              onClick={() => {
-                handleSubmit(currentHeroId, profile);
-              }}
-            >
-              儲存
-            </SumbitButton>
-          </SubmitWrapper>
-        </ProfileWrapper>
+        <Container>
+          <ProfileWrapper>
+            <CountersWrapper>
+              {isLoading ? <Loader /> : pointCounters}
+            </CountersWrapper>
+            <SubmitWrapper>
+              <AvailablePoints>剩餘點數： {availablePoints}</AvailablePoints>
+              <SumbitButton
+                shouldDisableSubmit={shouldDisableSubmit}
+                onClick={() => {
+                  handleSubmit(currentHeroId, profile);
+                }}
+              >
+                儲存
+              </SumbitButton>
+            </SubmitWrapper>
+          </ProfileWrapper>
+        </Container>
       ) : (
         ""
       )}
