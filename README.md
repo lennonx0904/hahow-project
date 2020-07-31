@@ -1,68 +1,55 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Hahow-project
 
-## Available Scripts
 
-In the project directory, you can run:
+## Demo
+---
+[Demo Website](https://)
 
-### `yarn start`
+## 執行方式
+---
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. 將專案 clone 至本機端
+```
+git clone https://github.com/lennonx0904/hahow-project.git
+```
+2. 安裝相關套件
+```
+yarn
+```
+3. 於 localhost:3000 運行
+```
+yarn start
+```
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## 專案架構
+---
 
-### `yarn test`
+## Web 架構
+---
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 第三方套件
+---
+* styled-components
+著名的 CSS-in-JS library，使用 Hash 方式產生 classname，不用擔心重複命名，且在 component 中可立即管理樣式。提供變數帶入樣式功能，可利用 props 更改樣式。
+* axios
+處理非同步網路請求的套件，使用上與 JavaScript 的 fetch 差異並不會太大，但可以讓 code 寫起來更簡潔。
+* Redux
+Redux 中的 store 負責集中管理 state。好處是 MVC 的分離：model 集中由 store 管理，actions 和 reducers 負責 controll，React 本身僅負責 view。
+* react-redux
+負責連結 React 及 Redux。
+* redux-thunk
+處理非同步的 middleware。
 
-### `yarn build`
+## 註解原則
+---
+* 在較複雜的 function 中，解釋其功能、使用情境及參數意義。
+* 需要 refactor 的時候。
+* 說明變數資料結構，以便團隊共同維護。
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+## 遇到的困難、問題、解決方法
+---
+* HeroList 不能 rerender 的問題依舊沒有解決，嘗試過以下方法：
+    1. 一開始直接在每張 HeroCard 上使用 `react-router-dom` 提供的 `<Link>`，連結至`heroes/:heroID`。
+    2. 使用 `Context` 管理使用者點選的 `currentHeroId`，然而在同一個 Context 的 Provider 下，只要有 state 更新，child components 都會 rerender。
+    3. 嘗試改用 `Redux`，在不更改 URL 的情況下，確實不會 rerender。不過一但使用 `history.push`，還是無法避免。 
+* 第一次使用 `styled-components`，一開始還不熟悉如何控制動態的樣式變化，透過閱讀文件及查詢網路相關資訊才慢慢上手。
