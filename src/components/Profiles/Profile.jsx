@@ -1,18 +1,20 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Counter from "./Counter";
-import { HeroContext } from "context/heroContext/heroContext";
-// import { GlobalContext } from "context/globalContext/globalContext";
-import { patchHeroProfile } from "../../api";
-import { useParams } from "react-router-dom";
+import Loader from "components/common/Loader";
 import useCustomSnackbar from "components/common/snackbar";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { fetchHeroProfile, patchHeroProfile } from "actions";
+import ROUTES from "constant/routes";
 
-const Wrapper = styled.div`
+
+const ProfileWrapper = styled.div`
   display: flex;
-  // padding: 0 3rem;
   justify-content: space-between;
   width: 100%;
   max-width: 1280px;
+  position: relative;
 
   @media (max-width: 992px) {
     width: 70%;
@@ -29,6 +31,7 @@ const Wrapper = styled.div`
 const CountersWrapper = styled.div`
   flex-grow: 1;
 `;
+
 const SubmitWrapper = styled.div`
   padding: 1rem 3rem;
   display: flex;
@@ -57,63 +60,82 @@ const SumbitButton = styled.div`
 `;
 
 function Profile() {
-  const { heroProfileState } = useContext(HeroContext);
-  let { heroId } = useParams();
-  // const { globalState, globalDispatch } = useContext(GlobalContext);
-
   const [availablePoints, setAvailablePoints] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const profile = useSelector((state) => state.hero.profile);
+  const currentHeroId = useSelector((state) => state.hero.currentHeroId);
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const { enqueueSuccessSnackbar, enqueueErrorSnackbar } = useCustomSnackbar();
+  const shouldRenderProfile = currentHeroId !== 0;
   const shouldDisableSubmit = availablePoints !== 0;
 
-  const {
-    enqueueSuccessSnackbar,
-    enqueueWarningSnackbar,
-  } = useCustomSnackbar();
-
-  useEffect(() => {});
-
-  const abilityCounters = Object.entries(heroProfileState).map(
-    ([attribute, point]) => {
-      return (
-        <Counter
-          key={`attribute-${attribute}`}
-          attribute={attribute}
-          point={point}
-          availablePoints={availablePoints}
-          setAvailablePoints={setAvailablePoints}
-        />
-      );
+  // update URL, profile and reset availablePoints when change card
+  useEffect(() => {
+    setAvailablePoints(0);
+    if (currentHeroId !== 0) {
+      history.push(`${ROUTES.HEROES_PAGE}/${currentHeroId}`);
+      dispatch(fetchHeroProfile(currentHeroId));
+      setIsLoading(true);
+      return;
     }
-  );
+    history.push(`${ROUTES.HEROES_PAGE}`);
+  }, [currentHeroId, dispatch, history]);
 
-  async function handleSubmit(heroId, profile) {
+  useEffect(() => {
+    if (Object.keys(profile).length > 0) {
+      setIsLoading(false);
+    }
+  }, [profile]);
+
+  /**
+   * data strcture of profile: {str: 2, int: 3, agi: 4, luk: 5}
+   */
+  const pointCounters = Object.entries(profile).map(([attribute, point]) => {
+    return (
+      <Counter
+        key={`attribute-${attribute}`}
+        attribute={attribute}
+        point={point}
+        availablePoints={availablePoints}
+        setAvailablePoints={setAvailablePoints}
+      />
+    );
+  });
+
+  async function handleSubmit(currentHeroId, profile) {
     if (shouldDisableSubmit) return;
-    const res = await patchHeroProfile(heroId, profile);
+    const res = await patchHeroProfile(currentHeroId, profile);
     if (res === "OK") {
-      // globalDispatch({
-      //   type: "SUBMIT_SUCCESS",
-      //   payload: { succes: "SUBMIT_SUCCESS" },
-      // });
       enqueueSuccessSnackbar("儲存成功");
       return;
     }
-    enqueueWarningSnackbar("儲存失敗");
+    enqueueErrorSnackbar("儲存失敗");
   }
 
   return (
-    <Wrapper>
-      <CountersWrapper>{abilityCounters}</CountersWrapper>
-      <SubmitWrapper>
-        <AvailablePoints>剩餘點數： {availablePoints}</AvailablePoints>
-        <SumbitButton
-          shouldDisableSubmit={shouldDisableSubmit}
-          onClick={() => {
-            handleSubmit(heroId, heroProfileState);
-          }}
-        >
-          儲存
-        </SumbitButton>
-      </SubmitWrapper>
-    </Wrapper>
+    <>
+      {shouldRenderProfile ? (
+        <ProfileWrapper>
+          <CountersWrapper>
+            {isLoading ? <Loader /> : pointCounters}
+          </CountersWrapper>
+          <SubmitWrapper>
+            <AvailablePoints>剩餘點數： {availablePoints}</AvailablePoints>
+            <SumbitButton
+              shouldDisableSubmit={shouldDisableSubmit}
+              onClick={() => {
+                handleSubmit(currentHeroId, profile);
+              }}
+            >
+              儲存
+            </SumbitButton>
+          </SubmitWrapper>
+        </ProfileWrapper>
+      ) : (
+        ""
+      )}
+    </>
   );
 }
 

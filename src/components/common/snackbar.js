@@ -6,15 +6,15 @@ export default function useCustomSnackbar() {
   function enqueueSuccessSnackbar(message) {
     enqueueSnackbar(message, {
       variant: "success",
-      autoHideDuration: 2000
+      autoHideDuration: 2000,
     });
   }
 
-  function enqueueWarningSnackbar(message) {
+  function enqueueErrorSnackbar(message) {
     enqueueSnackbar(message, {
-      variant: "warning",
-      autoHideDuration: 3000
+      variant: "error",
+      autoHideDuration: 3000,
     });
   }
-  return { enqueueSuccessSnackbar, enqueueWarningSnackbar };
+  return { enqueueSuccessSnackbar, enqueueErrorSnackbar };
 }

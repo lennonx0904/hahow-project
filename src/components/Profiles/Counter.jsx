@@ -1,14 +1,16 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
-import { HeroContext } from "../../context/heroContext/heroContext";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import IndeterminateCheckBoxIcon from "@material-ui/icons/IndeterminateCheckBox";
+import { useDispatch } from "react-redux";
+import { updateHeroProfile } from "actions";
 
 const CounterWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 30%;
+
   @media (max-width: 992px) {
     width: 70%;
   }
@@ -30,35 +32,35 @@ const Point = styled.div`
 `;
 
 function Counter({ attribute, point, availablePoints, setAvailablePoints }) {
-  const { heroProfileDispatch } = useContext(HeroContext);
+  const dispatch = useDispatch();
+  const shouldDisableIncrease = availablePoints === 0;
+  const shouldDisableDecrease = point === 0;
+
+  function handleIncrease() {
+    if (shouldDisableIncrease) return;
+    dispatch(updateHeroProfile(attribute, point + 1));
+    setAvailablePoints(availablePoints - 1);
+  }
+
+  function handleDecrease() {
+    if (shouldDisableDecrease) return;
+    dispatch(updateHeroProfile(attribute, point - 1));
+    setAvailablePoints(availablePoints + 1);
+  }
 
   return (
     <CounterWrapper>
       <Attribute>{attribute.toUpperCase()}</Attribute>
       <AddBoxIcon
-        color={availablePoints === 0 ? "disabled" : "action"}
+        color={shouldDisableIncrease ? "disabled" : "action"}
         fontSize="large"
-        onClick={() => {
-          if (availablePoints === 0) return;
-          heroProfileDispatch({
-            type: "UPDATE_HERO_PROFILE",
-            payload: { [attribute]: point + 1 },
-          });
-          setAvailablePoints(availablePoints - 1);
-        }}
+        onClick={handleIncrease}
       />
       <Point>{point}</Point>
       <IndeterminateCheckBoxIcon
-        color={point === 0 ? "disabled" : "action"}
+        color={shouldDisableDecrease ? "disabled" : "action"}
         fontSize="large"
-        onClick={() => {
-          if (point === 0) return;
-          heroProfileDispatch({
-            type: "UPDATE_HERO_PROFILE",
-            payload: { [attribute]: point - 1 },
-          });
-          setAvailablePoints(availablePoints + 1);
-        }}
+        onClick={handleDecrease}
       />
     </CounterWrapper>
   );

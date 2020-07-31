@@ -1,5 +1,0 @@
-
-1. HeroList 會重新 render（應該可用 memo 解決？）
-2. RWD
-3. 還需要 globalContext 嗎？ 或是專案根本不需要 context？
-4. global 的 css 怎麼用 style-component 寫？
