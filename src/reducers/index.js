@@ -21,8 +21,6 @@ export function heroListReducer(state = [], action) {
 export function heroReducer(state = initialHeroState, action) {
   const { type, payload } = action;
   switch (type) {
-    // case FETCH_HERO_LIST:
-    //   return { ...state, ...{ heroList: payload } };
     case FETCH_HERO_PROFILE:
       return { ...state, ...{ profile: payload } };
     case UPDATE_CURRENT_HERO_ID:
