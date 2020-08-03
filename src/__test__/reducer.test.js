@@ -1,22 +1,10 @@
 import {
   FETCH_HERO_LIST,
-  FETCH_HERO_PROFILE,
   UPDATE_CURRENT_HERO_ID,
   UPDATE_HERO_PROFILE,
 } from "constant";
 
 import { heroListReducer, heroReducer, initialHeroState } from "reducers";
-
-// test("returns default initial state of `false` when no action is passed", () => {
-//   const newState = heroListReducer(undefined, {});
-//   expect(newState).toBe(false);
-// });
-// test("returns state of true upon receiving an action of type `CORRECT_GUESS`", () => {
-//   const newState = successReducer(undefined, {
-//     type: actionTypes.CORRECT_GUESS,
-//   });
-//   expect(newState).toBe(true);
-// });
 
 describe("return initial state when no action is passed", () => {
   test("heroListReducer", () => {
@@ -68,7 +56,7 @@ describe("return new state after receiving an action", () => {
     });
     expect(newState).toEqual({ profile: {}, currentHeroId: 3 });
   });
-  
+
   test("UPDATE_HERO_PROFILE", () => {
     const newState = heroReducer(initialHeroState, {
       type: UPDATE_HERO_PROFILE,
