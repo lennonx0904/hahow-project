@@ -2,7 +2,7 @@
 
 
 ## Demo
-[Demo Website](https://lennonx0904.github.io/hahow-project/)
+[Demo Website](https://lennonx0904.github.io/hahow-project/#/)
 
 ## 執行方式
 1. 將專案 clone 至本機端
@@ -32,6 +32,8 @@ Redux 中的 store 負責集中管理 state。好處是 MVC 的分離：model �
 負責連結 React 及 Redux。
 * redux-thunk:
 處理非同步的 middleware。
+* moxios:
+撰寫非同步 actions 測試使用的套件，用來模擬發送網路請求。
 
 ## 註解原則
 * 在較複雜的 function 中，解釋其功能、使用情境及參數意義。
@@ -44,3 +46,4 @@ Redux 中的 store 負責集中管理 state。好處是 MVC 的分離：model �
     2. 使用 `Context` 管理使用者點選的 `currentHeroId`，然而在同一個 Context 的 Provider 下，只要有 state 更新，child components 都會 rerender。
     3. 嘗試改用 `Redux`，在不更改 URL 的情況下，確實不會 rerender。不過一但使用 `history.push`，還是無法避免。 
 * 第一次使用 `styled-components`，一開始還不熟悉如何控制動態的樣式變化，透過閱讀文件及查詢網路相關資訊才慢慢上手。
+* 第一次撰寫非同步請求的測試，使用`moxios`模擬網路請求，透過網路影片及閱讀文件學習。
