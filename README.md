@@ -19,7 +19,7 @@ yarn start
 ```
 
 ## 專案架構、Web 架構
-![image](https://github.com/lennonx0904/hahow-project/blob/master/image/structure.png?raw=true)
+![image](https://github.com/lennonx0904/hahow-project/blob/master/image/project-structure.png?raw=true)
 
 ## 第三方套件
 * styled-components:
