@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.js": "/hahow-project/static/js/main.7db742b9.chunk.js",
-    "main.js.map": "/hahow-project/static/js/main.7db742b9.chunk.js.map",
+    "main.js": "/hahow-project/static/js/main.0d1591a4.chunk.js",
+    "main.js.map": "/hahow-project/static/js/main.0d1591a4.chunk.js.map",
     "runtime-main.js": "/hahow-project/static/js/runtime-main.7ee08274.js",
     "runtime-main.js.map": "/hahow-project/static/js/runtime-main.7ee08274.js.map",
     "static/js/2.ca81dd5d.chunk.js": "/hahow-project/static/js/2.ca81dd5d.chunk.js",
     "static/js/2.ca81dd5d.chunk.js.map": "/hahow-project/static/js/2.ca81dd5d.chunk.js.map",
     "index.html": "/hahow-project/index.html",
-    "precache-manifest.16e7d86f0ae187f76d047512c338e36d.js": "/hahow-project/precache-manifest.16e7d86f0ae187f76d047512c338e36d.js",
+    "precache-manifest.1d1318c363255adc7feed3c18f639bcd.js": "/hahow-project/precache-manifest.1d1318c363255adc7feed3c18f639bcd.js",
     "service-worker.js": "/hahow-project/service-worker.js",
     "static/js/2.ca81dd5d.chunk.js.LICENSE.txt": "/hahow-project/static/js/2.ca81dd5d.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.7ee08274.js",
     "static/js/2.ca81dd5d.chunk.js",
-    "static/js/main.7db742b9.chunk.js"
+    "static/js/main.0d1591a4.chunk.js"
   ]
 }
