@@ -23,6 +23,9 @@ const CounterWrapper = styled.div`
 const Attribute = styled.div`
   padding: 1rem;
   width: 80px;
+  @media (max-width: 576px) {
+    padding: 0;
+  }
 `;
 
 const Point = styled.div`

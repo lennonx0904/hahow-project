@@ -43,7 +43,7 @@ const ProfileWrapper = styled.div`
 const CountersWrapper = styled.div`
   flex-grow: 1;
   @media (max-width: 576px) {
-    width: 80%;
+    width: 100%;
     margin: auto;
   }
 `;
@@ -57,7 +57,7 @@ const SubmitWrapper = styled.div`
     padding: 0.75rem 0;
   }
   @media (max-width: 576px) {
-    width: 70%;
+    width: 100%;
     margin: auto;
   }
 `;
