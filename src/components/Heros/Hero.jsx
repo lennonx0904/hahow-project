@@ -35,8 +35,10 @@ const Image = styled.img`
 `;
 
 const Name = styled.div`
-  padding: 1rem 0;
+  padding: 1rem 0 0.5rem;
   text-align: center;
+  font-family: "Kalam", cursive;
+  font-size: 1.5rem;
 `;
 
 function Hero({ id, name, image }) {
