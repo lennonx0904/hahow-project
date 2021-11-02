@@ -46,6 +46,7 @@ function Hero({ id, name, image }) {
   const dispatch = useDispatch();
   const isCurrentHero = id === currentHeroId;
 
+  // test for github account 
   return (
     <HeroCard
       isCurrentHero={isCurrentHero}
